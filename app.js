@@ -19,6 +19,10 @@
     var startDrag = card.asEventStream('mousedown');
     var endDrag = card.asEventStream('mouseup');
 
+    card.click(function(){
+      card.find('.content').attr('contenteditable','true');
+    });
+
     var draggingDeltas = startDrag.flatMap(function() {
       return board.asEventStream('mousemove')
         .map(xyFromEvent)
@@ -36,11 +40,21 @@
       });
     });
   }
-  function init(){
-    var board = $('html');
+  function initAddButton(board){
+    $('#add-card').click(function(){
+      board.append('<div class="card"><div class="content">text here</div></div>');
+      initAllCards(board);
+    });
+  }
+  function initAllCards(board){
     var cards = $('.card');
     var initCards = R.curry(initCardEvents)(board);
     R.forEach(initCards, cards);
+  }
+  function init(){
+    var board = $('html');
+    initAllCards(board);
+    initAddButton(board);
   }
 
   init();
