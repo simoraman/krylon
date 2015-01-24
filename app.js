@@ -1,4 +1,18 @@
 (function(){
+  function init(){
+    var board = $('html');
+    initAllCards(board);
+    initAddButton(board);
+    initSaveButton(board);
+    initAllSeparators(board);
+  }
+
+  function initSaveButton(board){
+    var btn = board.find('save-button');
+    btn.click(function(){
+
+    });
+  }
 
   function xyFromEvent(v){
     return {x: v.clientX, y: v.clientY};
@@ -14,13 +28,15 @@
     return {x: p1.x + p2.x, y: p1.y + p2.y};
   }
 
-  function initCardEvents(board, c){
-    var card = $(c);
+  function initElement(board, e){
+    var card = $(e);
     var startDrag = card.asEventStream('mousedown');
     var endDrag = card.asEventStream('mouseup');
 
     card.click(function(){
-      card.find('.content').attr('contenteditable','true');
+      card.find('.content').prop('contenteditable', function(_, val){
+        return val === 'true' ? 'false' : 'true';
+      });
     });
 
     var draggingDeltas = startDrag.flatMap(function() {
@@ -48,14 +64,15 @@
   }
   function initAllCards(board){
     var cards = $('.card');
-    var initCards = R.curry(initCardEvents)(board);
+    var initCards = R.curry(initElement)(board);
     R.forEach(initCards, cards);
   }
-  function init(){
-    var board = $('html');
-    initAllCards(board);
-    initAddButton(board);
+  function initAllSeparators(board){
+    var cards = $('.separator');
+    var initCards = R.curry(initElement)(board);
+    R.forEach(initCards, cards);
   }
+
 
   init();
 })();
