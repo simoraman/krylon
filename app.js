@@ -8,12 +8,25 @@
   }
 
   function initSaveButton(board){
-    var btn = board.find('save-button');
+    var btn = board.find('#save');
     btn.click(function(){
-
+      saveCards();
     });
   }
 
+  function saveCards(){
+    function extractCardData(_, cardElement){
+      var data = {};
+      var card = $(cardElement);
+      return {
+        position: card.position(),
+        content: $(card.find('.content')).text()
+      };
+    }
+    var cards = $('.card');
+    var cardData = R.map(extractCardData, cards);
+    localStorage['cards'] = JSON.stringify(cardData.toArray());
+  };
   function xyFromEvent(v){
     return {x: v.clientX, y: v.clientY};
   }
@@ -46,8 +59,9 @@
         .map(getDelta)
         .takeUntil(endDrag);
     });
-
-    var blockPosition = draggingDeltas.scan({x: 0, y: 0}, add);
+    var posX = parseInt(card.css('left'));
+    var posY = parseInt(card.css('top'));
+    var blockPosition = draggingDeltas.scan({x: posX, y: posY}, add);
 
     blockPosition.onValue(function(pos) {
       card.css({
@@ -58,21 +72,25 @@
   }
   function initAddButton(board){
     $('#add-card').click(function(){
-      board.append('<div class="card"><div class="content">text here</div></div>');
+      createCard(board, 'text here');
       initAllCards(board);
     });
   }
   function initAllCards(board){
+    var cardData = JSON.parse(localStorage['cards']);
+    R.forEach(function(data){ createCard(board, data); }, cardData);
     var cards = $('.card');
     var initCards = R.curry(initElement)(board);
     R.forEach(initCards, cards);
   }
   function initAllSeparators(board){
-    var cards = $('.separator');
+    var separators = $('.separator');
     var initCards = R.curry(initElement)(board);
-    R.forEach(initCards, cards);
+    R.forEach(initCards, separators);
   }
-
+  function createCard(context, data) {
+    context.append('<div class="card" style="top:' + data.position.top + 'px; left:' + data.position.left + 'px"><div class="content">' + data.content + '</div></div>');
+  }
 
   init();
 })();
