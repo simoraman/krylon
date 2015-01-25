@@ -11,18 +11,24 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.8.0/ramda.min.js"></script>
     </head>
     <body>
-      <button id="add-card">Add card</button>
-      <button id="save">Save</button>
-      <div class="separator"></div>
-
+      <div id="controls">
+        <button id="add-card">Add card</button>
+        <button id="save">Save</button>
+      </div>
       <script src="app.js"></script>
       <style type="text/css" media="screen">
-
+        #controls{
+        background:grey;
+        z-index:1;
+        position:fixed;
+        padding:10px;
+        }
         .card {
         width:10em;
         height:10em;
         background: #F1C40F;
         position:absolute;
+        text-align:center;
         }
         .separator{
         position:absolute;

@@ -10,13 +10,12 @@
   function initSaveButton(board){
     var btn = board.find('#save');
     btn.click(function(){
-      saveCards();
+      save();
     });
   }
 
-  function saveCards(){
+  function save(){
     function extractCardData(_, cardElement){
-      var data = {};
       var card = $(cardElement);
       return {
         position: card.position(),
@@ -26,6 +25,13 @@
     var cards = $('.card');
     var cardData = R.map(extractCardData, cards);
     localStorage['cards'] = JSON.stringify(cardData.toArray());
+
+    var separators = $('.separator');
+    localStorage['separators'] = JSON.stringify(R.map(extractSeparatorData, separators).toArray());
+    function extractSeparatorData(_, sepElement){
+      return { position: $(sepElement).position() };
+    }
+
   };
   function xyFromEvent(v){
     return {x: v.clientX, y: v.clientY};
@@ -84,9 +90,13 @@
     R.forEach(initCards, cards);
   }
   function initAllSeparators(board){
+    var data = JSON.parse(localStorage['separators']);
+    R.forEach(function(data){ renderSeparator(board, data); }, data);
     var separators = $('.separator');
-    var initCards = R.curry(initElement)(board);
-    R.forEach(initCards, separators);
+    R.forEach(R.curry(initElement)(board), separators);
+    function renderSeparator(context, data){
+      context.append('<div class="separator" style="top:' + data.position.top + 'px; left:' + data.position.left + 'px"></div>');
+    };
   }
   function createCard(context, data) {
     context.append('<div class="card" style="top:' + data.position.top + 'px; left:' + data.position.left + 'px"><div class="content">' + data.content + '</div></div>');
