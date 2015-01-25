@@ -53,10 +53,26 @@
     var endDrag = card.asEventStream('mouseup');
 
     card.click(function(){
-      card.find('.content').prop('contenteditable', function(_, val){
-        return val === 'true' ? 'false' : 'true';
-      });
+      var content = card.find('.content');
+      var edit = card.find('.text');
+      toggleDisplay(content);
+      toggleDisplay(edit);
+      function toggleDisplay(element){
+        if(element.css('display') === 'none'){
+          element.css('display', 'inline');
+        } else {
+          element.css('display', 'none');
+        }
+      }
     });
+    var updateContent = function(event)
+                {
+                  var target = $(event.target);
+                  target.parent().find('.content').text(target.val());
+                };
+    card.find('.text')
+      .asEventStream('keyup')
+      .onValue(updateContent);
 
     var draggingDeltas = startDrag.flatMap(function() {
       return board.asEventStream('mousemove')
@@ -99,7 +115,7 @@
     };
   }
   function createCard(context, data) {
-    context.append('<div class="card" style="top:' + data.position.top + 'px; left:' + data.position.left + 'px"><div class="content">' + data.content + '</div></div>');
+    context.append('<div class="card" style="top:' + data.position.top + 'px; left:' + data.position.left + 'px"><div class="content">' + data.content + '</div><textarea class="text" style="display:none">' + data.content + '</textarea></div>');
   }
 
   init();
