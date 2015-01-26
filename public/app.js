@@ -60,6 +60,7 @@
       function toggleDisplay(element){
         if(element.css('display') === 'none'){
           element.css('display', 'inline');
+          element.focus();
         } else {
           element.css('display', 'none');
         }
@@ -94,8 +95,13 @@
   }
   function initAddButton(board){
     $('#add-card').click(function(){
-      createCard(board, 'text here');
+      createCard(board, {position:{top:50,left:10}, content:'text here'});
       initAllCards(board);
+    });
+
+    $('#add-separator').click(function(){
+      renderSeparator(board, {position:{top:1,left:1}});
+      initAllSeparators(board);
     });
   }
   function initAllCards(board){
@@ -110,10 +116,10 @@
     R.forEach(function(data){ renderSeparator(board, data); }, data);
     var separators = $('.separator');
     R.forEach(R.curry(initElement)(board), separators);
-    function renderSeparator(context, data){
-      context.append('<div class="separator" style="top:' + data.position.top + 'px; left:' + data.position.left + 'px"></div>');
-    };
   }
+  function renderSeparator(context, data){
+    context.append('<div class="separator" style="top:' + data.position.top + 'px; left:' + data.position.left + 'px"></div>');
+  };
   function createCard(context, data) {
     context.append('<div class="card" style="top:' + data.position.top + 'px; left:' + data.position.left + 'px"><div class="content">' + data.content + '</div><textarea class="text" style="display:none">' + data.content + '</textarea></div>');
   }
