@@ -20,5 +20,5 @@ app.use(errorHandler({
   dumpExceptions: true,
   showStack: true
 }));
-
+console.log(port+hostname);
 app.listen(port, hostname);
