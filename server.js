@@ -21,5 +21,4 @@ app.use(errorHandler({
   showStack: true
 }));
 
-console.log("Simple static server listening at http://" + hostname + ":" + port);
 app.listen(port, hostname);
