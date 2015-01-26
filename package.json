@@ -2,7 +2,7 @@
   "name": "Krylon",
   "version": "0.0.2",
   "description": "Simplest board",
-  "engine": "0.10.24",
+  "engines": { "node" : "0.10.24" },
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
