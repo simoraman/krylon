@@ -1,0 +1,21 @@
+{
+  "name": "Krylon",
+  "version": "0.0.1",
+  "description": "Simplest board",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Simo Råman",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.1.2",
+    "body-parser": "^1.1.2",
+    "errorhandler": "^1.0.1",
+    "method-override": "^1.0.0"
+  }
+}
