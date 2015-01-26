@@ -3,7 +3,7 @@ var express = require("express"),
     bodyParser = require('body-parser'),
     errorHandler = require('errorhandler'),
     methodOverride = require('method-override'),
-    hostname = process.env.HOSTNAME || 'localhost',
+    hostname = process.env.HOSTNAME || '0.0.0.0',
     port = process.env.PORT || 4567;
 
 app.get("/", function (req, res) {
