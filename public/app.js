@@ -105,22 +105,28 @@
     });
   }
   function initAllCards(board){
-    var cardData = JSON.parse(localStorage['cards']);
-    R.forEach(function(data){ createCard(board, data); }, cardData);
+    var savedCards = localStorage['cards'];
+    if(savedCards){
+      R.forEach(function(data){ renderCard(board, data); }, JSON.parse(savedCards));
+    }
     var cards = $('.card');
     var initCards = R.curry(initElement)(board);
     R.forEach(initCards, cards);
   }
   function initAllSeparators(board){
-    var data = JSON.parse(localStorage['separators']);
-    R.forEach(function(data){ renderSeparator(board, data); }, data);
+    var savedSeparators = localStorage['separators'];
+    if(savedSeparators){
+      R.forEach(
+        function(data){ renderSeparator(board, data); },
+        JSON.parse(savedSeparators));
+    }
     var separators = $('.separator');
     R.forEach(R.curry(initElement)(board), separators);
   }
   function renderSeparator(context, data){
     context.append('<div class="separator" style="top:' + data.position.top + 'px; left:' + data.position.left + 'px"></div>');
   };
-  function createCard(context, data) {
+  function renderCard(context, data) {
     context.append('<div class="card" style="top:' + data.position.top + 'px; left:' + data.position.left + 'px"><div class="content">' + data.content + '</div><textarea class="text" style="display:none">' + data.content + '</textarea></div>');
   }
 
