@@ -52,7 +52,12 @@
     var startDrag = card.asEventStream('mousedown');
     var endDrag = card.asEventStream('mouseup');
 
-    card.click(function(){
+    var cardClicks = card.asEventStream('click');
+    cardClicks.bufferWithTimeOrCount(300, 2)
+      .filter(function(x) { return x.length == 2; })
+      .onValue(toggleEdit);
+
+    function toggleEdit() {
       var content = card.find('.content');
       var edit = card.find('.text');
       toggleDisplay(content);
@@ -65,7 +70,7 @@
           element.css('display', 'none');
         }
       }
-    });
+    };
     var updateContent = function(event)
                 {
                   var target = $(event.target);
@@ -95,7 +100,7 @@
   }
   function initAddButton(board){
     $('#add-card').click(function(){
-      createCard(board, {position:{top:50,left:10}, content:'text here'});
+      renderCard(board, {position:{top:50,left:10}, content:'text here'});
       initAllCards(board);
     });
 
